@@ -62,7 +62,7 @@ func main() {
 			cors.Config{
 				AllowOrigins: []string{"*"},
 				AllowMethods: []string{"POST"},
-				AllowHeaders: []string{"Content-Type, Authorization, Origin, X-MULTIX-NONCE, X-MULTIX-ACCESS, X-MULTIX-SIGNATURE"},
+				AllowHeaders: []string{"Content-Type, Authorization, Origin, X-OBSWRT-NONCE, X-OBSWRT-ACCESS, X-OBSWRT-SIGNATURE"},
 			}))
 	} else {
 		router = gin.Default()
@@ -71,7 +71,7 @@ func main() {
 			cors.Config{
 				AllowOrigins: []string{"*"},
 				AllowMethods: []string{"POST"},
-				AllowHeaders: []string{"Content-Type, Authorization, Origin, X-MULTIX-NONCE, X-MULTIX-ACCESS, X-MULTIX-SIGNATURE"},
+				AllowHeaders: []string{"Content-Type, Authorization, Origin, X-OBSWRT-NONCE, X-OBSWRT-ACCESS, X-OBSWRT-SIGNATURE"},
 			}))
 	}
 	
@@ -110,7 +110,7 @@ func ginLogFormatter() func(param gin.LogFormatterParams) string {
 
 func CORSMiddleware() gin.HandlerFunc {
     return func(c *gin.Context) {
-		c.Header("Access-Control-Allow-Headers", "Content-Type, Authorization, Origin, X-MULTIX-NONCE, X-MULTIX-ACCESS, X-MULTIX-SIGNATURE")
+		c.Header("Access-Control-Allow-Headers", "Content-Type, Authorization, Origin, X-OBSWRT-NONCE, X-OBSWRT-ACCESS, X-OBSWRT-SIGNATURE")
 		c.Header("Access-Control-Allow-Credentials", "true")
 		c.Header("Access-Control-Allow-Origin", "*")
 		c.Header("Access-Control-Allow-Methods", "POST")
