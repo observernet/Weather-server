@@ -1,0 +1,32 @@
+{
+    "service":
+    {
+        "name": "Weather",
+        "mode": "debug",
+        "api_key": "581F0AC88B6B4C0F",
+        "api_secret": "DAC96AAE40DA1CEA2E38F2D4D2E3E4FE",
+        "timezone": "Asia/Seoul"
+    },
+    "www":
+    {
+        "http_host": ":7989",
+        "http_ssl_chain": "/etc/letsencrypt/live/obswrt.obsr-app.org/fullchain.pem",
+        "http_ssl_privkey": "/etc/letsencrypt/live/obswrt.obsr-app.org/privkey.pem"
+    },
+    "database":
+    {
+        "driver": "godror",
+        "user": "OBSR",
+        "password": "obsr",
+        "connectString": "",
+        "max_idle_conns": "0",
+        "max_open_conns": "2"
+    },
+    "redis":
+    {
+        "host": ":6379",
+        "password": "Fine3456",
+        "max_idle_conns": 4,
+        "max_active_conns": 2
+    }
+}
