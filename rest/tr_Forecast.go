@@ -114,11 +114,11 @@ func _Forecast_GetCurr(ctx context.Context, db *sql.DB, x int64, y int64) (map[s
 			 "  and GRID_Y = '" + fmt.Sprintf("%d", y) + "' " +
 			 "  and DATA_TYPE in ('PTY', 'T1H', 'WSD') "
 	rows, err := db.QueryContext(ctx, query)
-	if err != nil { return nil, err }
+	if err != nil { fmt.Println("1"); return nil, err }
 
 	for rows.Next() {	
 		err = rows.Scan(&data_type, &value, &base_date, &base_time)
-		if err != nil { rows.Close(); return nil, err }
+		if err != nil { rows.Close(); fmt.Println("2"); return nil, err }
 
 		switch data_type {
 			case "PTY": ODAM_PTY = value
@@ -138,13 +138,13 @@ func _Forecast_GetCurr(ctx context.Context, db *sql.DB, x int64, y int64) (map[s
 	stmt, err := db.PrepareContext(ctx, query)
 
 	err = stmt.QueryRow("SKY").Scan(&VSRT_SKY)
-	if err != nil && err != sql.ErrNoRows { stmt.Close(); return nil, err }
+	if err != nil && err != sql.ErrNoRows { stmt.Close(); fmt.Println("3"); return nil, err }
 
 	err = stmt.QueryRow("T1H").Scan(&VSRT_T1H)
-	if err != nil && err != sql.ErrNoRows { stmt.Close(); return nil, err }
+	if err != nil && err != sql.ErrNoRows { stmt.Close(); fmt.Println("4"); return nil, err }
 
 	err = stmt.QueryRow("WSD").Scan(&VSRT_WSD)
-	if err != nil && err != sql.ErrNoRows { stmt.Close(); return nil, err }
+	if err != nil && err != sql.ErrNoRows { stmt.Close(); fmt.Println("5"); return nil, err }
 	stmt.Close()
 
 	// 단기 데이타를 가져온다
@@ -157,10 +157,10 @@ func _Forecast_GetCurr(ctx context.Context, db *sql.DB, x int64, y int64) (map[s
 	stmt, err = db.PrepareContext(ctx, query)
 
 	err = stmt.QueryRow("TMX").Scan(&SHRT_TMX)
-	if err != nil { stmt.Close(); return nil, err }
+	if err != nil { stmt.Close(); fmt.Println("6"); return nil, err }
 
 	err = stmt.QueryRow("TMN").Scan(&SHRT_TMN)
-	if err != nil { stmt.Close(); return nil, err }
+	if err != nil { stmt.Close(); fmt.Println("7"); return nil, err }
 	stmt.Close()
 
 	// 미세먼지 데이타를 가져온다
@@ -168,7 +168,7 @@ func _Forecast_GetCurr(ctx context.Context, db *sql.DB, x int64, y int64) (map[s
 			"WHERE GRID_X = '" + fmt.Sprintf("%d", x) + "' " +
 			"  and GRID_Y = '" + fmt.Sprintf("%d", y) + "' "
 	err = db.QueryRowContext(ctx, query).Scan(&DUST_PM25)
-	if err != nil { return nil, err }
+	if err != nil { fmt.Println("8"); return nil, err }
 
 
 	// 하늘상태를 계산한다
@@ -221,6 +221,7 @@ func _Forecast_GetCurr(ctx context.Context, db *sql.DB, x int64, y int64) (map[s
 	list["TMX"] = SHRT_TMX
 	list["TMN"] = SHRT_TMN
 	list["WSD"] = WSD
+	list["PM25"] = DUST_PM25
 	list["DG"] = common.GetDustGradeFromPM25(DUST_PM25)
 
 	return list, nil
